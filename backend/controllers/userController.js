@@ -92,13 +92,21 @@ export const updateUserEmailController = async (req, res) => {
     try {
         const result = await updateUserEmailService(req)
 
-        if (result.data) {
+        if (result.message) {
             return res.status(200).json({
                 statusCode: 200,
-                message: 'Se ajustó el mail del usuario'
+                message: result.message
+            })
+        } else if (result.error) {
+            return res.status(400).json({
+                statusCode: 400,
+                message: result.error
             })
         } else {
-            // se evalúa cantidad de filas identificadas y afectadas?
+            return res.status(400).json({
+                statusCode: 400,
+                message: 'Se produjo un error inesperado'
+            })
         }
     } catch (error) {
         return res.status(400).json({

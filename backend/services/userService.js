@@ -96,8 +96,24 @@ export const updateUserEmailService = async (req) => {
 
         const updatedEmail = await updateUserEmailDao(userId, newEmail)
 
-        result.data = updatedEmail
-        return result
+        // LA OPERACIÓN DEL SCHEMA DE MONGOOSE ES updateOne
+        if (updatedEmail.acknowledged === true) {
+            if (updatedEmail.matchedCount === 1) {
+                if (updatedEmail.modifiedCount === 1) {
+                    result.message = 'El email del usuario fue modificado correctamente'
+                    return result
+                } else {
+                    result.error = 'El nuevo email es idéntico al ya existente'
+                    return result
+                }
+            } else {
+                result.error = 'No se encontró un usuario a modificar'
+                return result
+            }
+        } else {
+            result.error = 'Se produjo un error al intentar modificar el email del usuario'
+            return result
+        }
     } catch (error) {
         result.error = 'Se produjo un error inesperado'
         return result
