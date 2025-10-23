@@ -96,7 +96,7 @@ export const updateUserEmailService = async (req) => {
 
         const updatedEmail = await updateUserEmailDao(userId, newEmail)
 
-        // LA OPERACIÓN DEL SCHEMA DE MONGOOSE ES updateOne
+        // LA OPERACIÓN DEL SCHEMA DE MONGOOSE ES updateOne, POR LO QUE SE EVALÚA EL RESULTADO
         if (updatedEmail.acknowledged === true) {
             if (updatedEmail.matchedCount === 1) {
                 if (updatedEmail.modifiedCount === 1) {
