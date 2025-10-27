@@ -6,7 +6,10 @@ import cors from 'cors'
 import { PORT } from './config/appConfig.js'
 
 import { mongoConnect } from './config/mongoConnection.js'
-import { create } from 'domain'
+
+import {
+    userController
+} from './routes/main.routes.js'
 
 const app = express()
 
@@ -30,9 +33,8 @@ const httpServer = createServer(app)
 
 mongoConnect()
 
-/* app.use('/api/')
-app.use('/api/')
-app.use('/api/') */
+app.use('/api/', userController)
+
 
 httpServer.listen(PORT, () => console.log(`Servidor corriendo en el puerto ${PORT}`))
 httpServer.on('error', () => console.log('Error al levantar el servidor'))

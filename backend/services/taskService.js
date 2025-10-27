@@ -153,10 +153,25 @@ export const updateTaskDescriptionService = async (req) => {
             return result
         }
 
-        const taskUpdated = await updateTaskDescriptionDao(taskId, newDescription)
+        const updatedTask = await updateTaskDescriptionDao(taskId, newDescription)
 
-        result.data = taskUpdated
-        return result
+        if (updatedTask.acknowledged === true) {
+            if (updatedTask.matchedCount === 1) {
+                if (updatedTask.modifiedCount === 1) {
+                    result.message = 'Se modificó la tarea correctamente'
+                    return result
+                } else {
+                    result.error = 'La descripción de la tarea es idéntica la existente'
+                    return result
+                }
+            } else {
+                result.error = 'No se encontró la tarea a modificar'
+                return result
+            }
+        } else {
+            result.error = 'Se produjo un error al intentar modificar la tarea'
+            return result
+        }
     } catch (error) {
         if (error.errors.name.name === 'ValidatorError') {
             const messages = Object.values(error.errors).map(e => e.message)
@@ -201,10 +216,25 @@ export const updateTaskStatusService = async (req) => {
             return result
         }
 
-        const taskUpdated = await updateTaskStatusDao(taskId, newStatus)
+        const updatedTask = await updateTaskStatusDao(taskId, newStatus)
 
-        result.data = taskUpdated
-        return result
+        if (updatedTask.acknowledged === true) {
+            if (updatedTask.matchedCount === 1) {
+                if (updatedTask.modifiedCount === 1) {
+                    result.message = 'Se modificó el estado de la tarea correctamente'
+                    return result
+                } else {
+                    result.error = 'El estado de la tarea es idéntico al actual'
+                    return result
+                }
+            } else {
+                result.error = 'No se encontró la tarea a modificar'
+                return result
+            }
+        } else {
+            result.error = 'Se produjo un error al intentar modificar el estado de la tarea'
+            return result
+        }
     } catch (error) {
         if (error.errors.name.name === 'ValidatorError') {
             const messages = Object.values(error.errors).map(e => e.message)
@@ -249,10 +279,25 @@ export const updateCommentTaskService = async (req) => {
             return result
         }
 
-        const taskUpdated = await updateCommentTaskDao(taskId, newComment)
+        const updatedTask = await updateCommentTaskDao(taskId, newComment)
 
-        result.data = taskUpdated
-        return result
+        if (updatedTask.acknowledged === true) {
+            if (updatedTask.matchedCount === 1) {
+                if (updatedTask.modifiedCount === 1) {
+                    result.message = 'El comentario de la tarea fue modificado correctamente'
+                    return result
+                } else {
+                    result.error = 'El comentario de la tarea es idéntico al actual'
+                    return result
+                }
+            } else {
+                result.error = 'No se encontró la tarea a modificar'
+                return result
+            }
+        } else {
+            result.error = 'Se produjo un error al intentar modificar el comentario de la tarea'
+            return result
+        }
     } catch (error) {
         if (error.errors.name.name === 'ValidatorError') {
             const messages = Object.values(error.errors).map(e => e.message)

@@ -146,8 +146,18 @@ export const deleteUserService = async (req) => {
         // SI BORRÉ LAS TAREAS O PUDE AL MENOS PROCESAR OK, ELIMINO AL USUARIO
         const deletedUser = await deleteUserDao(userId)
 
-        result.data = deletedUser
-        return result
+        if (deletedUser.acknowledged === true) {
+            if (deletedUser === 1) {
+                result.message = 'El usuario fue eliminado correctamente'
+                return result
+            } else {
+                result.error = 'No se encontró un usuario a eliminar'
+                return result
+            }
+        } else {
+            result.error = 'Se produjo un error al intentar eliminar el usuario'
+            return result
+        }
     } catch (error) {
         result.error = 'Se produjo un error inesperado'
         return result

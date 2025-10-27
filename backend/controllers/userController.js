@@ -118,7 +118,24 @@ export const updateUserEmailController = async (req, res) => {
 
 export const deleteUserController = async (req, res) => {
     try {
+        const result = await deleteUserService(req)
 
+        if (result.message) {
+            return res.status(200).json({
+                statusCode: 200,
+                message: result.message
+            })
+        } else if (result.error) {
+            return res.status(400).json({
+                statusCode: 400,
+                message: result.error
+            })
+        } else {
+            return res.status(400).json({
+                statusCode: 400,
+                message: 'Se produjo un error inesperado'
+            })
+        }
     } catch (error) {
         return res.status(400).json({
             statusCode: 400,
