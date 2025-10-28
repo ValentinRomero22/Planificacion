@@ -88,11 +88,12 @@ export const getTaskByDateRangeService = async (req) => {
     }
 }
 
-export const getTaskByUserAndDateRangeService = async () => {
+export const getTaskByUserAndDateRangeService = async (req) => {
     const result = {}
 
     try {
-        const { userId, startDate, finalDate } = req.body
+        const userId = req.params.userId
+        const { startDate, finalDate } = req.body
 
         if (startDate == null) {
             result.error = 'La fecha de inicio indicada no es válida'
@@ -311,7 +312,7 @@ export const updateCommentTaskService = async (req) => {
     }
 }
 
-export const deleteCommentTaskService = async () => {
+export const deleteCommentTaskService = async (req) => {
     const result = {}
 
     try {
