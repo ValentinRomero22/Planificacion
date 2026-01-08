@@ -1,10 +1,24 @@
 @use "./variables" as *;
 
 .gridContainer {
-    display: grid;
     border: 1px solid #2e3a2a;
+    font-family: $font;
 
     .grid {
-        background-color: #2e3a2a;
+        display: grid;
+        /* background-color: #2e3a2a; */
+        border: none;
+
+        .cellHeader {
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .userCell {
+            font-weight: bold;
+            text-align: center;
+            border: solid 1px #000;
+            border-radius: 5px;
+        }
     }
 }
