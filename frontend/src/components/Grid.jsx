@@ -1,6 +1,4 @@
 import { useMemo, useState } from 'react'
-import { DataGrid } from 'react-data-grid'
-import 'react-data-grid/lib/styles.css'
 
 // debería obtener los usuarios llamando a la API
 const initialUsers = [
@@ -9,86 +7,69 @@ const initialUsers = [
     { id: 3, user: "Carlos" }
 ]
 
-const createDates = (start, amount = 5) => {
-    const dates = []
-    const days = ['LUN', 'MAR', 'MIE', 'JUE', 'VIE']
-    const base = new Date(start)
-
-    let weeklyCounter = 0
+const createDays = (startDate, amount) => {
+    const days = []
 
     for (let i = 0; i < amount; i++) {
-        const date = new Date(base)
+        const date = new Date(startDate)
+        date.setDate(startDate.getDate() + i)
 
-        date.setDate(base.getDate() + i)
+        const dayNumber = date.getDay()
+        const isWeekend = dayNumber === 0 || dayNumber === 6
 
-        const nameDay = days[date.getDay()]
-        const formatDate = `${nameDay} ${date.toLocaleDateString('es-UY', {
-            day: '2-digit',
-            month: '2-digit'
-        })}`
-
-        if (['LUN', 'MAR', 'MIE', 'JUE', 'VIE'].includes(nameDay)) {
-            dates.push({ key: `fecha_${i}`, name: formatDate })
-            weeklyCounter++
-
-            if (nameDay === 'VIE') {
-                dates.push({
-                    key: `separator_${weeklyCounter}`,
-                    name: '',
-                    isSeparator: true
-                })
-            }
-        }
+        days.push({
+            id: i,
+            date,
+            label: date.toLocaleDateString('es-UY', {
+                day: '2-digit',
+                month: '2-digit'
+            }),
+            isWeekend,
+            isRealDay: true
+        })
     }
 
-    return dates
+    return days
 }
 
 export const Grid = () => {
-    const [rows, setRows] = useState(initialUsers)
-
-    const startDate = new Date(2025, 9, 22)
-    const dateColumns = useMemo(() => createDates(startDate, 15), [])
-
-    const columns = useMemo(() => {
-        return [
-            { key: 'user', name: 'USUARIO', frozen: true, width: 150 },
-            ...dateColumns.map(col => ({
-                ...col,
-                width: col.isSeparator ? '5px' : '180px',
-                renderCell: col.isSeparator
-                    ? () => (
-                        <div
-                            style={{
-                                backgroundColor: 'transparent',
-                                border: 'none',
-                                height: '100%'
-                            }}
-                        />
-                    ) : undefined
-            }))
-        ]
-    }, [dateColumns])
-
-    const orderedRows = useMemo(() =>
-        [...rows].sort((a, b) => a.user.localeCompare(b.user)), [rows]
-    )
-
-    const onRowsReorder = (sourceIndex, targetIndex) => {
-        const newRows = [...rows]
-        const [moved] = newRows.splice(sourceIndex[0], 1)
-        newRows.splice(targetIndex, 0, moved)
-        setRows(newRows)
-    }
+    const days = createDays(new Date(2026, 0, 1), 30)
 
     return (
-        <section className='gridContainer'>
-            <DataGrid
-                className='grid'
-                columns={columns}
-                rows={orderedRows}
-                onRowsReorder={onRowsReorder}
-            />
+        <section
+            className='gridContainer'
+            style={{
+                gridTemplateColumns: `150px repeat(${days.length}, 1fr)`
+            }}>
+            {/* HEADER DE LAS COLUMNAS */}
+            <div className='cellHeader userHeader'>USUARIO</div>
+
+            {
+                days.map(day => (
+                    <div
+                        key={day.id}
+                        className={`cellHeader ${day.isWeekend ? 'weekend' : 'weekday'}`}
+                    >
+                        {day.label}
+                    </div>
+                ))
+            }
+            {/* FILAS */}
+            {initialUsers.map(user => (
+                <>
+                    <div key={user.id} className='cellUser'>
+                        {user.user}
+                    </div>
+                    {
+                        days.map(day => (
+                            <div
+                                key={`${user.id}-${day.id}`}
+                                className={`cell ${day.isWeekend ? 'weekend' : 'weekday'}`}>
+                            </div>
+                        ))
+                    }
+                </>
+            ))}
         </section>
     )
 }

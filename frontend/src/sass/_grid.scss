@@ -1,23 +1,10 @@
 @use "./variables" as *;
 
 .gridContainer {
-    padding: 0 50px;
+    display: grid;
+    border: 1px solid #2e3a2a;
 
     .grid {
-        background-color: #fff;
-
-        .rdg-cell {
-            height: 150px;
-            font-family: $font;
-            text-align: center;
-            background-color: #fff;
-            color: #000;
-        }
-
-        .rdg-cell[data-column-key^="separator_"] {
-            background-color: transparent !important;
-            border: none !important;
-            pointer-events: none;
-        }
+        background-color: #2e3a2a;
     }
 }
