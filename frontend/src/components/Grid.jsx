@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 
 // debería obtener los usuarios llamando a la API
 const initialUsers = [
@@ -19,7 +19,9 @@ const createDays = (startDate, amount) => {
 
         days.push({
             id: i,
-            date,
+            date: new Intl.DateTimeFormat('es-UY', {
+                weekday: 'short'
+            }).format(date).toUpperCase().slice(0, 3),
             label: date.toLocaleDateString('es-UY', {
                 day: '2-digit',
                 month: '2-digit'
@@ -51,29 +53,16 @@ export const Grid = () => {
                             key={day.id}
                             className={`cellHeader ${day.isWeekend ? 'weekend' : 'weekday'}`}
                         >
-                            {day.isWeekend ? "" : day.label}
+                            {day.isWeekend ? "" : `${day.date} ${day.label}`}
                         </div>
                     ))
                 }
                 {/* FILAS */}
                 {initialUsers.map(user => (
-                    <>
-                        {/* SEPARADOR */}
-                        <div key={user.id} className='separatorCell'>
-                            ---
-                        </div>
-                        {
-                            days.map(day => (
-                                <div
-                                    key={`${user.id}-${day.id}`}
-                                    className='separatorCell'>
-                                </div>
-                            ))
-                        }
-                        
+                    <React.Fragment key={user.id}>
                         {/* USUARIOS */}
                         <div key={user.id} className='userCell'>
-                            {user.user}
+                            {user.user.toUpperCase()}
                         </div>
                         {
                             days.map(day => (
@@ -83,7 +72,7 @@ export const Grid = () => {
                                 </div>
                             ))
                         }
-                    </>
+                    </React.Fragment>
                 ))}
             </section>
         </section>
