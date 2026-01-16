@@ -4,7 +4,14 @@ import React, { useMemo, useState } from 'react'
 const initialUsers = [
     { id: 1, user: "María" },
     { id: 2, user: "Pedro" },
-    { id: 3, user: "Carlos" }
+    { id: 3, user: "Carlos" },
+    { id: 4, user: "María" },
+    { id: 5, user: "Pedro" },
+    { id: 6, user: "Carlos" },
+    { id: 7, user: "María" },
+    { id: 8, user: "Pedro" },
+    { id: 9, user: "Carlos" },
+    { id: 10, user: "María" },
 ]
 
 const createDays = (startDate, amount) => {
@@ -44,9 +51,11 @@ export const Grid = () => {
                 style={{
                     gridTemplateColumns: `150px repeat(${days.length}, 1fr)`
                 }}>
-                {/* HEADER DE LAS COLUMNAS */}
-                <div className='cellHeader userHeader'>USUARIO</div>
 
+                { /* ESQUINA SUPERIOR IZQUIERDA [ USUARIO ] */}
+                <div className='cellHeader userHeader corner'>USUARIO</div>
+
+                {/* HEADER DE LAS COLUMNAS */}
                 {
                     days.map(day => (
                         <div

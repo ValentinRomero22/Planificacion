@@ -1,14 +1,24 @@
 @use "./variables" as *;
 
 .gridContainer {
+    height: 100vh;
+    overflow: auto;
+    position: relative;
     font-family: $font;
 
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
     .grid {
-        padding: 0 50px;
+        /* overflow-x: auto; */
+        position: relative;
+        padding: 0 50px 50px;
         display: grid;
-        /* background-color: #2e3a2a; */
-        row-gap: 10px;
-        column-gap: 10px;
+        /* row-gap: 10px;
+        column-gap: 10px; */
 
         .cellHeader {
             height: 35px;
@@ -16,8 +26,23 @@
             align-content: center;
             font-weight: bold;
             text-align: center;
-            border: solid 1px #000;
-            border-radius: 5px;
+            border-radius: 10px;
+            background-color: rgb(23, 12, 116);
+            color: #fff;
+            box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+
+            /* &::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                bottom: -20px;
+                width: 100%;
+                height: 20px;
+                background: linear-gradient(to bottom, rgb(255, 255, 255), transparent);
+            } */
         }
 
         .userCell {
@@ -25,19 +50,49 @@
             font-weight: bold;
             text-align: center;
             align-content: center;
-            border: solid 1px #000;
-            border-radius: 5px;
+            border-radius: 15px;
+            background-color: #525252;
+            box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+            color: #fff;
+            position: sticky;
+            left: 0;
+            z-index: 5;
+
+            /* &::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: -20px;
+                width: 20px;
+                height: 100%;
+                background: linear-gradient(to bottom, rgb(255, 255, 255), transparent);
+            } */
         }
 
         .cell {
             width: 150px;
-            border: solid 1px #000;
-            border-radius: 5px;
+            border-radius: 15px;
+            background-color: #fff;
+            box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
 
         .weekend {
             width: 3px;
             border: none;
+            background-color: transparent;
         }
+
+        .corner {
+            position: sticky;
+            top: 0;
+            left: 0;
+            z-index: 20;
+        }
+
+        /* .cell,
+        .cellHeader,
+        .userCell {
+            margin: 5px;
+        } */
     }
 }
