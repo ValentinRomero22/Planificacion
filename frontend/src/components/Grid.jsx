@@ -1,5 +1,7 @@
 import React, { useMemo, useState } from 'react'
 
+import { Header } from "../components/Header"
+
 // debería obtener los usuarios llamando a la API
 const initialUsers = [
     { id: 1, user: "María" },
@@ -45,7 +47,8 @@ export const Grid = () => {
     const days = createDays(new Date(2026, 0, 1), 30)
 
     return (
-        <section className='gridContainer'>
+        <section className='gridContainer'>            
+            <Header />
             <section
                 className='grid'
                 style={{
